@@ -1,3 +1,5 @@
 <?php
 
-echo "ini halaman index";
+namespace Suryo\Learn\Controller;
+
+view("index.view.php");

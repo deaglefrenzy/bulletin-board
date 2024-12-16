@@ -1,5 +1,9 @@
 <?php
 
+namespace Suryo\Learn\Controller;
+
+use Exception;
+
 $posts = [
     [
         'postId' => 1,
@@ -27,7 +31,7 @@ $posts = [
     ],
 ];
 
-function putJSON($file, array $data, $mode): string
+function writeJSON($file, array $data, $mode): string
 {
     if ($handle = fopen($file, $mode)) {
         fwrite($handle, json_encode($data));
@@ -38,5 +42,23 @@ function putJSON($file, array $data, $mode): string
     }
 }
 
-putJSON("posts.json", $posts, "w");
+function parseJSON($file): array
+{
+    if ($handle = fopen($file, 'r')) {
+        $jsonContent = file_get_contents($file);
+
+        if ($jsonContent === false) {
+            throw new Exception("Failed to read JSON file: $file");
+        }
+
+        $jsonData = json_decode($jsonContent, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('Error parsing JSON: ' . json_last_error_msg());
+        }
+
+        return $jsonData;
+    } else die("Can't open file.");
+}
+writeJSON("posts.json", $posts, "w");
 redirect("posts.json");

@@ -1,4 +1,5 @@
 <?php
+
 function dd($value)
 {
     echo "<pre>";
@@ -14,4 +15,10 @@ function redirect($url, $statusCode = 302)
         header('Location: ' . $url, true, $statusCode);
         exit;
     }
+}
+
+
+function view($path)
+{
+    require 'Views/' . $path;
 }

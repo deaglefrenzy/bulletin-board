@@ -14,7 +14,7 @@ class Router
         $path = str_replace(BASE_PATH, '', $path);
         //dd($path);
         if (array_key_exists($path, $routes)) {
-            require "controller/" . $routes[$path];
+            require "Controller/" . $routes[$path];
         } else echo "route not found";
     }
 }
