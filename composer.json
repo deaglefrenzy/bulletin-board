@@ -1,0 +1,18 @@
+{
+    "name": "suryo/learn",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Suryo\\Learn\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Suryo",
+            "email": "deaglefrenzy@gmail.com"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^3.8"
+    }
+}
