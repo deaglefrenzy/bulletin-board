@@ -12,9 +12,9 @@ class Router
     {
         $path = parse_url($uri)['path'];
         $path = str_replace(BASE_PATH, '', $path);
-        //Functions::dd($path);
+        //dd($path);
         if (array_key_exists($path, $routes)) {
-            require "view/" . $routes[$path];
+            require "controller/" . $routes[$path];
         } else echo "route not found";
     }
 }

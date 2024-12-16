@@ -4,7 +4,8 @@
     "autoload": {
         "psr-4": {
             "Suryo\\Learn\\": "src/"
-        }
+        },
+        "files": ["src/Core/Functions.php"]
     },
     "authors": [
         {

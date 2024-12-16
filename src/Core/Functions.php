@@ -1,15 +1,17 @@
 <?php
-
-namespace Suryo\Learn\Core;
-
-class Functions
+function dd($value)
 {
-    static function dd($value)
-    {
-        echo "<pre>";
-        var_dump($value);
-        echo "</pre>";
+    echo "<pre>";
+    var_dump($value);
+    echo "</pre>";
 
-        die();
+    die();
+}
+
+function redirect($url, $statusCode = 302)
+{
+    if (headers_sent() === false) {
+        header('Location: ' . $url, true, $statusCode);
+        exit;
     }
 }

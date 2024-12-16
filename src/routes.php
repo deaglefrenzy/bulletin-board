@@ -5,5 +5,5 @@ namespace Suryo\Learn;
 $routes = [
     "" => "index.php",
     "login" => "login.php",
-    "testing" => "testpage.php"
+    "posts" => "posts.php"
 ];
