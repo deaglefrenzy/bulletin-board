@@ -9,16 +9,18 @@ use const Suryo\Learn\POSTS_FILE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentData = Posts::parseJSON(POSTS_FILE);
-    $newData = [
-        'postId' => $_POST['post_id'],
-        'priv' => $_POST['post_privilege'],
-        'title' => $_POST['post_title'],
-        'body' => $_POST['post_body'],
-        'created' => $_POST['post_creation_date'],
-        'expiry' => $_POST['post_expiry_date']
-    ];
+    $newData = new Posts(
+        $_POST['post_id'],
+        $_POST['post_privilege'],
+        $_POST['post_title'],
+        $_POST['post_body'],
+        $_POST['post_creation_date'],
+        $_POST['post_expiry_date']
+    );
+
     $currentData[] = $newData;
-    if (Posts::writeJSON(POSTS_FILE, $currentData, "w")) {
+    //dd($currentData);
+    if (Posts::writeJSON(POSTS_FILE, $currentData)) {
         redirect(BASE_PATH);
     }
 }

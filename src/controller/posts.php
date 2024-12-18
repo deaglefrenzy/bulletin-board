@@ -2,6 +2,7 @@
 
 namespace Suryo\Learn\Controller;
 
+use DateTime;
 use Exception;
 
 $posts = [
@@ -33,10 +34,28 @@ $posts = [
 
 class Posts
 {
-    static function writeJSON($file, array $data, $mode): string
+    public int $postId;
+    public bool $priv = false;
+    public string $title;
+    public string $body;
+    public string $created;
+    public string $expiry;
+
+    function __construct($postId, $priv, $title, $body, $created, $expiry)
     {
-        if ($handle = fopen($file, $mode)) {
-            fwrite($handle, json_encode($data));
+        $this->postId = $postId;
+        $this->priv = filter_var($priv, FILTER_VALIDATE_BOOLEAN);
+        $this->title = $title;
+        $this->body = $body;
+        $this->created = $created;
+        $this->expiry = $expiry;
+    }
+
+    static function writeJSON($file, array $data): string
+    {
+        if ($handle = fopen($file, "w")) {
+            $array = (array) $data;
+            fwrite($handle, json_encode($array));
             fclose($handle);
             return "Data written.";
         } else {
@@ -48,20 +67,29 @@ class Posts
     {
         if ($handle = fopen($file, 'r')) {
             $jsonContent = file_get_contents($file);
-
             if ($jsonContent === false) {
                 throw new Exception("Failed to read JSON file: $file");
             }
 
-            $jsonData = json_decode($jsonContent, true);
+            $jsonData = json_decode($jsonContent);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception('Error parsing JSON: ' . json_last_error_msg());
             }
+            $result = [];
+            foreach ($jsonData as $row) {
+                $result[] = new Posts(
+                    $row->postId,
+                    $row->priv,
+                    $row->title,
+                    $row->body,
+                    $row->created,
+                    $row->expiry
+                );
+            }
+            fclose($handle);
 
-            return $jsonData;
+            return $result;
         } else die("Can't open file.");
     }
 }
-//$this->writeJSON("posts.json", $posts, "w");
-//redirect("posts.json");

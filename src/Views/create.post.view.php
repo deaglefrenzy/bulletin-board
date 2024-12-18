@@ -8,7 +8,7 @@ use Suryo\Learn\Controller\Posts;
 use const Suryo\Learn\POSTS_FILE;
 
 $data = Posts::parseJSON(POSTS_FILE);
-$currentID = getHighestNumber($data, "postId") + 1;
+$currentID = getHighestValue($data, "postId") + 1;
 $today = Carbon::today()->toDateString();
 require('partials/head.php');
 require('partials/nav.php');

@@ -24,14 +24,14 @@ require('partials/nav.php')
         $data = Posts::parseJSON(POSTS_FILE);
         foreach ($data as $row) {
             Carbon::setLocale('id');
-            $datecr = Carbon::createFromFormat('Y-m-d', $row["created"]);
-            $dateex = Carbon::createFromFormat('Y-m-d', $row["expiry"]);
+            $datecr = Carbon::createFromFormat('Y-m-d', $row->created);
+            $dateex = Carbon::createFromFormat('Y-m-d', $row->expiry);
         ?>
             <tr>
-                <td><?php echo $row["postId"]; ?></td>
-                <td><?php echo $row["priv"]; ?></td>
-                <td><?php echo $row["title"]; ?></td>
-                <td><?php echo $row["body"]; ?></td>
+                <td><?php echo $row->postId; ?></td>
+                <td><?php echo $row->priv; ?></td>
+                <td><?php echo $row->title; ?></td>
+                <td><?php echo $row->body; ?></td>
                 <td><?php echo $datecr->isoFormat('dddd, DD MMMM YYYY') ?></td>
                 <td><?php echo $dateex->isoFormat('dddd, DD MMMM YYYY') ?></td>
             </tr>

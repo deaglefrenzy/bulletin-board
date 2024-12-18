@@ -23,28 +23,21 @@ function view($path)
     require 'Views/' . $path;
 }
 
-function getHighestNumber(array $arr, string $key): ?float
+function getHighestValue(array $objects, string $propertyName): ?float
 {
-    if (empty($arr)) {
-        return null; // Handle empty array
+    if (empty($objects)) {
+        return null; // Handle empty array case
     }
 
-    $highest = null;
+    $highestValue = -INF; // Initialize with negative infinity
 
-    foreach ($arr as $item) {
-        if (!is_array($item) || !array_key_exists($key, $item)) {
-            continue; // Skip items without the key or if not an array
-        }
-
-        $value = $item[$key];
-
-        if (is_numeric($value)) {
-            $numValue = (float)$value; // Convert to float for accurate comparisons
-            if ($highest === null || $numValue > $highest) {
-                $highest = $numValue;
+    foreach ($objects as $object) {
+        if (isset($object->$propertyName) && is_numeric($object->$propertyName)) {
+            if ($object->$propertyName > $highestValue) {
+                $highestValue = $object->$propertyName;
             }
         }
     }
 
-    return $highest;
+    return $highestValue;
 }
