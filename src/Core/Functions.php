@@ -41,3 +41,30 @@ function getHighestValue(array $objects, string $propertyName): ?float
 
     return $highestValue;
 }
+
+function decodeJSON($file): array
+{
+    $jsonContent = file_get_contents($file);
+    if ($jsonContent === false) {
+        throw new Exception("Failed to read JSON file: $file");
+    }
+
+    $jsonData = json_decode($jsonContent);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception('Error parsing JSON: ' . json_last_error_msg());
+    }
+    return $jsonData;
+}
+
+function writeJSON($file, array $data): string
+{
+    if ($handle = fopen($file, "w")) {
+        $array = (array) $data;
+        fwrite($handle, json_encode($array));
+        fclose($handle);
+        return "Data written.";
+    } else {
+        return "Unable to open file for writing.";
+    }
+}

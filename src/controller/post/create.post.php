@@ -8,21 +8,28 @@ use const Suryo\Learn\BASE_PATH;
 use const Suryo\Learn\POSTS_FILE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $currentData = Posts::parseJSON(POSTS_FILE);
+    //http_response_code(402);
+    //dd("UNAUTHORIZED");
+    $currentData = Posts::parsePosts(POSTS_FILE);
+    //dd($_POST);
+    $input = json_decode(file_get_contents('php://input'));
+    //dd($input);
     $newData = new Posts(
-        $_POST['post_id'],
-        $_POST['post_privilege'],
-        $_POST['post_title'],
-        $_POST['post_body'],
-        $_POST['post_creation_date'],
-        $_POST['post_expiry_date']
+        $input->postId,
+        $input->priv,
+        $input->title,
+        $input->body,
+        $input->created,
+        $input->expiry
     );
-
+    //dd($newData);
     $currentData[] = $newData;
     //dd($currentData);
-    if (Posts::writeJSON(POSTS_FILE, $currentData)) {
-        redirect(BASE_PATH);
+    if (writeJSON(POSTS_FILE, $currentData)) {
+        dd("POST CREATED");
     }
 }
 
-view("create.post.view.php");
+// dd("HELLO WORLD 2");
+
+//view("create.post.view.php");

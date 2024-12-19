@@ -1,5 +1,6 @@
 <?php
-
+require('partials/head.php');
+require('partials/nav.php')
 ?>
 <h1>Login</h1>
 
@@ -12,3 +13,4 @@
 
     <button type="submit">Login</button>
 </form>
+<?php require('partials/footer.php') ?>

@@ -51,31 +51,10 @@ class Posts
         $this->expiry = $expiry;
     }
 
-    static function writeJSON($file, array $data): string
-    {
-        if ($handle = fopen($file, "w")) {
-            $array = (array) $data;
-            fwrite($handle, json_encode($array));
-            fclose($handle);
-            return "Data written.";
-        } else {
-            return "Unable to open file for writing.";
-        }
-    }
-
-    static function parseJSON($file): array
+    static function parsePosts($file): array
     {
         if ($handle = fopen($file, 'r')) {
-            $jsonContent = file_get_contents($file);
-            if ($jsonContent === false) {
-                throw new Exception("Failed to read JSON file: $file");
-            }
-
-            $jsonData = json_decode($jsonContent);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Error parsing JSON: ' . json_last_error_msg());
-            }
+            $jsonData = decodeJSON($file);
             $result = [];
             foreach ($jsonData as $row) {
                 $result[] = new Posts(
