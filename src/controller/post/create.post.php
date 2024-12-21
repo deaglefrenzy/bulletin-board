@@ -2,8 +2,6 @@
 
 namespace Suryo\Learn\Controller\post;
 
-use Suryo\Learn\Controller\Posts;
-
 use const Suryo\Learn\BASE_PATH;
 use const Suryo\Learn\POSTS_FILE;
 
