@@ -1,6 +1,6 @@
 <?php
 
-namespace Suryo\Learn\Controller;
+namespace Suryo\Learn\Controller\post;
 
 use DateTime;
 use Exception;

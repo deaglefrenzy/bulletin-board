@@ -68,3 +68,30 @@ function writeJSON($file, array $data): string
         return "Unable to open file for writing.";
     }
 }
+
+function generateToken($length = 20): string
+{
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $tokenValue = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $tokenValue .= $characters[rand(0, strlen($characters) - 1)];
+    }
+
+    return $tokenValue;
+}
+
+function respond($statusCode, $message, $data = [])
+{
+    http_response_code($statusCode);
+    header('Content-Type: application/json');
+
+    $response = [
+        'status' => $statusCode,
+        'message' => $message,
+        'data' => $data
+    ];
+
+    echo json_encode($response);
+    die();
+}

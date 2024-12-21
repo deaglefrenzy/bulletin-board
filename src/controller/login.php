@@ -2,44 +2,58 @@
 
 namespace Suryo\Learn\Controller;
 
-use Suryo\Learn\Controller\Users;
+use Suryo\Learn\Controller\user\Users;
+use Suryo\Learn\Controller\user\Token;
+use Carbon\Carbon;
 
 use const Suryo\Learn\BASE_PATH;
 use const Suryo\Learn\USERS_FILE;
-use const Suryo\Learn\SESSION_FILE;
+use const Suryo\Learn\TOKEN_FILE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: *");
+    // if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+    // }
+
+    //dd(apache_request_headers()["Authorization"]);
 
     $currentData = Users::parseUsers(USERS_FILE);
     $input = json_decode(file_get_contents('php://input'));
     //dd($input);
     foreach ($currentData as $row) {
-        //dd($input->userName);
         if ($row->userName === $input->userName) {
             if ($row->password === $input->password) {
-                $id = $row->userId;
+                $userId = $row->userId;
                 break;
             }
-            http_response_code(401);
-            dd("PASSWORD DOESN'T MATCH");
+            respond(401, "Wrong password");
         }
-        http_response_code(403);
-        dd("USER NOT FOUND");
+        respond(403, "User not found");
     }
-    $token = md5($input->userName . rand(1, 1000));
-    $loginData = new Users(
-        $id,
-        $input->userName,
-        "-REDACTED-",
-        $token
+
+    $newLogin = new Token(
+        $userId,
+        Carbon::now()->addDays(3),
+        generateToken()
     );
-    $sessionData[] = $loginData;
-    if (writeJSON(SESSION_FILE, $sessionData)) {
-        dd("LOGGED IN");
+
+    $loggedIn = Token::parseTokens(TOKEN_FILE);
+
+    //filter token dari user yg sama
+    foreach ($loggedIn as $row) {
+        if ($row->userId <> $userId) {
+            $newData[] = new Token(
+                $row->userId,
+                $row->expiry,
+                $row->value
+            );
+        }
     }
-    //dd($currentData);
+
+    $newData[] = $newLogin;
+    if (writeJSON(TOKEN_FILE, $newData)) {
+        //Token::sendToken();
+        respond(200, "User logged in", $newLogin);
+    }
 }
-
-// dd("HELLO WORLD 2");
-
-//view("create.post.view.php");

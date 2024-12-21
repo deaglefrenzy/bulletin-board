@@ -8,9 +8,9 @@ use Carbon\Carbon;
 use Suryo\Learn\Core\Router;
 
 const BASE_PATH = "/bulletin-board/src/";
-const POSTS_FILE = "posts.json";
-const USERS_FILE = "users.json";
-const SESSION_FILE = "session.json";
+const POSTS_FILE = "Controller/post/posts.json";
+const USERS_FILE = "Controller/user/users.json";
+const TOKEN_FILE = "Controller/user/token.json";
 
 require_once "routes.php";
 
