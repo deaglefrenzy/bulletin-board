@@ -5,8 +5,8 @@ namespace Suryo\Learn\Controller;
 use Suryo\Learn\Controller\user\Users;
 use Suryo\Learn\Controller\user\Token;
 use Carbon\Carbon;
+use Suryo\Learn\Controller\response\LoginResponses;
 
-use const Suryo\Learn\BASE_PATH;
 use const Suryo\Learn\USERS_FILE;
 use const Suryo\Learn\TOKEN_FILE;
 
@@ -20,40 +20,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $currentData = Users::parseUsers(USERS_FILE);
     $input = json_decode(file_get_contents('php://input'));
-    //dd($input);
     foreach ($currentData as $row) {
-        if ($row->userName === $input->userName) {
-            if ($row->password === $input->password) {
+        if ($row->userName === $input[0]->userName) {
+            if ($row->password === $input[0]->password) {
                 $userId = $row->userId;
                 break;
             }
-            respond(401, "Wrong password");
+            respond(new LoginResponses(401, "Password doesn't match"));
         }
-        respond(403, "User not found");
+        respond(new LoginResponses(403, "User not found"));
     }
-
+    $userToken = generateToken();
     $newLogin = new Token(
         $userId,
         Carbon::now()->addDays(3),
-        generateToken()
+        $userToken
     );
-
     $loggedIn = Token::parseTokens(TOKEN_FILE);
 
-    //filter token dari user yg sama
-    foreach ($loggedIn as $row) {
-        if ($row->userId <> $userId) {
-            $newData[] = new Token(
-                $row->userId,
-                $row->expiry,
-                $row->value
-            );
-        }
+    $loggedIn[] = $newLogin;
+    if (!$writeJSON(TOKEN_FILE, $loggedIn)) {
+        die();
     }
-
-    $newData[] = $newLogin;
-    if (writeJSON(TOKEN_FILE, $newData)) {
-        //Token::sendToken();
-        respond(200, "User logged in", $newLogin);
-    }
+    respond(new LoginResponses(200, "User logged in", $loggedIn));
 }

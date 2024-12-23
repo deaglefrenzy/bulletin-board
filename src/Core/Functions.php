@@ -81,17 +81,13 @@ function generateToken($length = 20): string
     return $tokenValue;
 }
 
-function respond($statusCode, $message, $data = [])
+function respond($response)
 {
-    http_response_code($statusCode);
-    header('Content-Type: application/json');
+    echojson($response);
+}
 
-    $response = [
-        'status' => $statusCode,
-        'message' => $message,
-        'data' => $data
-    ];
-
-    echo json_encode($response);
+function echojson($value)
+{
+    echo json_encode($value);
     die();
 }

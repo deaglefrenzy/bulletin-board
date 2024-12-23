@@ -20,9 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input->created,
         $input->expiry
     );
-    //dd($newData);
     $currentData[] = $newData;
-    //dd($currentData);
     if (writeJSON(POSTS_FILE, $currentData)) {
         dd("POST CREATED");
     }

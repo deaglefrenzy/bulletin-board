@@ -4,6 +4,7 @@ namespace Suryo\Learn\Controller\user;
 
 use Carbon\Carbon;
 use Exception;
+use Suryo\Learn\Controller\response\LoginResponses;
 
 use const Suryo\Learn\TOKEN_FILE;
 
@@ -41,9 +42,17 @@ class Token
         } else die("Can't open file.");
     }
 
-    static function sendToken()
+
+    static function authUser(): int
     {
-        $loggedIn[] = Token::parseTokens(TOKEN_FILE);
-        header("token: " . $loggedIn[array_key_last($loggedIn)]->value);
+        $token = apache_request_headers()["Authorization"];
+        $loggedIn = Token::parseTokens(TOKEN_FILE);
+        foreach ($loggedIn as $row) {
+            if ($row->value === $token) {
+                return $row->userId;
+                break;
+            }
+        }
+        \respond(new LoginResponses(401, "You are not authorized to do this"));
     }
 }
