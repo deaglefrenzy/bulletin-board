@@ -4,9 +4,10 @@ namespace Suryo\Learn\Controller\user;
 
 use Carbon\Carbon;
 use Exception;
-use Suryo\Learn\Controller\response\LoginResponses;
+use Suryo\Learn\Controller\Response\LoginResponses;
 
 use const Suryo\Learn\TOKEN_FILE;
+use const Suryo\Learn\USERS_FILE;
 
 class Token
 {
@@ -43,7 +44,7 @@ class Token
     }
 
 
-    static function authUser(): int
+    static function authUserId(): int
     {
         $token = apache_request_headers()["Authorization"];
         $loggedIn = Token::parseTokens(TOKEN_FILE);
@@ -54,5 +55,11 @@ class Token
             }
         }
         \respond(new LoginResponses(401, "You are not authorized to do this"));
+    }
+
+    static function authUser(): Users
+    {
+        $userId = Token::authUserId();
+        return Users::parseUsers(USERS_FILE, $userId)[0];
     }
 }

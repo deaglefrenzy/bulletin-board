@@ -3,7 +3,7 @@
 namespace Suryo\Learn\Views;
 
 use Carbon\Carbon;
-use Suryo\Learn\Controller\Posts;
+use Suryo\Learn\Controller\Post\Posts;
 
 use const Suryo\Learn\POSTS_FILE;
 
@@ -21,7 +21,7 @@ require('partials/nav.php')
             <th>Expiry Date</th>
         </thead>
         <?php
-        $data = Posts::parseJSON(POSTS_FILE);
+        $data = Posts::parsePosts(POSTS_FILE);
         foreach ($data as $row) {
             Carbon::setLocale('id');
             $datecr = Carbon::createFromFormat('Y-m-d', $row->created);

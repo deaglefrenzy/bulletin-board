@@ -2,7 +2,7 @@
 
 namespace Suryo\Learn\Controller;
 
-use Suryo\Learn\Controller\response\LoginResponses;
+use Suryo\Learn\Controller\Response\LoginResponses;
 use Suryo\Learn\Controller\user\Token;
 use const Suryo\Learn\TOKEN_FILE;
 

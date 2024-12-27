@@ -5,7 +5,7 @@ namespace Suryo\Learn\Controller;
 use Suryo\Learn\Controller\user\Users;
 use Suryo\Learn\Controller\user\Token;
 use Carbon\Carbon;
-use Suryo\Learn\Controller\response\LoginResponses;
+use Suryo\Learn\Controller\Response\LoginResponses;
 
 use const Suryo\Learn\USERS_FILE;
 use const Suryo\Learn\TOKEN_FILE;
@@ -39,8 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $loggedIn = Token::parseTokens(TOKEN_FILE);
 
     $loggedIn[] = $newLogin;
-    if (!$writeJSON(TOKEN_FILE, $loggedIn)) {
+    if (!writeJSON(TOKEN_FILE, $loggedIn)) {
         die();
     }
-    respond(new LoginResponses(200, "User logged in", $loggedIn));
+    $user[] = $newLogin;
+    respond(new LoginResponses(200, "User logged in", $user));
 }

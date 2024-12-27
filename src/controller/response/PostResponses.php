@@ -1,10 +1,10 @@
 <?php
 
-namespace Suryo\Learn\Controller\response;
+namespace Suryo\Learn\Controller\Response;
 
-class PostResponse extends Responses
+class PostResponses extends Responses
 {
-    private array $posts;
+    public array $posts;
 
     public function __construct(int $statusCode, string $message, array $posts = NULL)
     {

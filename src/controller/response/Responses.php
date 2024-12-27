@@ -1,11 +1,11 @@
 <?php
 
-namespace Suryo\Learn\Controller\response;
+namespace Suryo\Learn\Controller\Response;
 
 abstract class Responses
 {
-    protected int $statusCode;
-    protected string $message;
+    public int $statusCode;
+    public string $message;
 
     public function __construct(int $statusCode, string $message)
     {

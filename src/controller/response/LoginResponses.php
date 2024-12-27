@@ -1,10 +1,10 @@
 <?php
 
-namespace Suryo\Learn\Controller\response;
+namespace Suryo\Learn\Controller\Response;
 
 class LoginResponses extends Responses
 {
-    private array $user = NULL;
+    public array $user;
 
     public function __construct(int $statusCode, string $message, array $user = NULL)
     {

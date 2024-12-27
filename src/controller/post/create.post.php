@@ -2,18 +2,19 @@
 
 namespace Suryo\Learn\Controller\post;
 
-use const Suryo\Learn\BASE_PATH;
+use Suryo\Learn\Controller\Response\PostResponses;
+use Suryo\Learn\Controller\user\Token;
+
 use const Suryo\Learn\POSTS_FILE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //http_response_code(402);
-    //dd("UNAUTHORIZED");
+
     $currentData = Posts::parsePosts(POSTS_FILE);
-    //dd($_POST);
-    $input = json_decode(file_get_contents('php://input'));
-    //dd($input);
+    $input = json_decode(file_get_contents('php://input'))[0];
+    $user = Token::authUser();
     $newData = new Posts(
         $input->postId,
+        $user->userId,
         $input->priv,
         $input->title,
         $input->body,
@@ -21,11 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input->expiry
     );
     $currentData[] = $newData;
-    if (writeJSON(POSTS_FILE, $currentData)) {
-        dd("POST CREATED");
+
+    //$repository->save($newData);
+
+    $newPost[] = $newData;
+    if (!writeJSON(POSTS_FILE, $currentData)) {
+        respond(new PostResponses(401, "Post creation failed"));
     }
+    //respond(new PostResponses(200, "Post created", $repository->getByID($newData->id)));
+    respond(new PostResponses(200, "Post created", $newPost));
 }
-
-// dd("HELLO WORLD 2");
-
-//view("create.post.view.php");

@@ -83,11 +83,6 @@ function generateToken($length = 20): string
 
 function respond($response)
 {
-    echojson($response);
-}
-
-function echojson($value)
-{
-    echo json_encode($value);
+    echo json_encode($response);
     die();
 }

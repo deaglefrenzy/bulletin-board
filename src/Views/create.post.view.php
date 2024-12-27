@@ -3,11 +3,12 @@
 namespace Suryo\Learn\Views;
 
 use Carbon\Carbon;
-use Suryo\Learn\Controller\Posts;
+use Suryo\Learn\Controller\post\Posts;
+
 
 use const Suryo\Learn\POSTS_FILE;
 
-$data = Posts::parseJSON(POSTS_FILE);
+$data = Posts::parsePosts(POSTS_FILE);
 $currentID = getHighestValue($data, "postId") + 1;
 $today = Carbon::today()->toDateString();
 require('partials/head.php');

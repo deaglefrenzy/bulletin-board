@@ -30,18 +30,25 @@ class Users
         $this->password = $password;
     }
 
-    static function parseUsers($file): array
+    static function parseUsers($file, $search = NULL): array
     {
         if ($handle = fopen($file, 'r')) {
 
             $jsonData = decodeJSON($file);
             $result = [];
+            $found = [];
             foreach ($jsonData as $row) {
-                $result[] = new Users(
+                $user = new Users(
                     $row->userId,
                     $row->userName,
                     $row->password,
                 );
+                $result[] = $user;
+                if ($row->userId == $search) {
+                    $found[] = $user;
+                    return $found;
+                    exit;
+                }
             }
             fclose($handle);
 

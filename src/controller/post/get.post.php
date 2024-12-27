@@ -2,11 +2,16 @@
 
 namespace Suryo\Learn\Controller\post;
 
-use Suryo\Learn\Controller\response\LoginResponses;
+use PostsJSONRepository;
+use Suryo\Learn\Controller\Response\PostResponses;
 use Suryo\Learn\Controller\user\Token;
 
 use const Suryo\Learn\POSTS_FILE;
 
-$userId = Token::authUser();
+$user = Token::authUser();
+
+//$repository = new PostsJSONRepository()
+
 $allPosts = Posts::parsePosts(POSTS_FILE);
-echojson($allPosts);
+//respond(new PostResponses(200, "User logged in: " . $user->userName, $repository->getAll()));
+respond(new PostResponses(200, "User logged in: " . $user->userName, $allPosts));
